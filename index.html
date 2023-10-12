@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    <title>MRZ Generator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div id="loading-indicator" class="loading-indicator">
+        <div class="spinner"></div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div>
+                <select onchange="selectChanged()" id="dropdown">
+                    <option value="Passport(TD3)">Passport(TD3)</option>
+                    <option value="ID Card(TD1)">ID Card(TD1)</option>
+                    <option value="ID Card(TD2)">ID Card(TD2)</option>
+                    <option value="Visa(A)">Visa(A)</option>
+                    <option value="Visa(B)">Visa(B)</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div>
+                <label for="docType">Document type</label>
+                <input type="text" id="document_type_txt" placeholder="P">
+            </div>
+            <div>
+                <label for="birthDate">Birth date</label>
+                <input type="text" id="birth_date_txt" placeholder="210118">
+            </div>
+            <div>
+                <label for="nationality">Nationality</label>
+                <input type="text" id="nationality_txt" placeholder="GBR">
+            </div>
+        </div>
+
+        <div class="row">
+            <div>
+                <label for="country">Country</label>
+                <input type="text" id="country_code_txt" placeholder="GBR">
+            </div>
+            <div>
+                <label for="sex">Sex</label>
+                <input type="text" id="sex_txt" placeholder="F">
+            </div>
+            <div>
+                <label for="surname">Surname</label>
+                <input type="text" id="surname_txt" placeholder="SXNGND">
+            </div>
+        </div>
+
+        <div class="row">
+            <div>
+                <label for="docNumber">Document number</label>
+                <input type="text" id="document_number_txt" placeholder="K1RELFC7">
+            </div>
+            <div>
+                <label for="expiryDate">Expiry date</label>
+                <input type="text" id="expiry_date_txt" placeholder="240710">
+            </div>
+            <div>
+                <label for="givenNames">Given names</label>
+                <input type="text" id="given_names_txt" placeholder="MGGPJ">
+            </div>
+        </div>
+
+        <div class="row">
+            <div>
+                <label for="optionalData1">Optional data 1</label>
+                <input type="text" id="optional_data1_txt" placeholder="ZE184226B">
+            </div>
+            <div>
+                <label for="optionalData2">Optional data 2</label>
+                <input type="text" id="optional_data2_txt">
+            </div>
+        </div>
+
+        <div class="row">
+            <div>
+                <button id="randomBtn" onclick="randomize()">Random</button>
+            </div>
+            <div>
+                <button id="generateBtn" onclick="generate()">Generate</button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div>
+                <textarea rows="3" cols="50" readonly id="outputMRZ"></textarea>
+            </div>
+        </div>
+    </div>
+    <script src="python.js"></script>
+</body>
+
+</html>

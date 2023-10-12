@@ -191,6 +191,42 @@ function generate() {
     `);
     let dataFromPython = pyodide.globals.get('txt');
     document.getElementById("outputMRZ").value = dataFromPython;
+
+    let canvas = document.getElementById("overlay");
+    let ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    var img = new Image();
+    if (sex_txt.value === 'M') {
+        img.src = 'images/man.jpg';
+    }
+    else {
+        img.src = "images/woman.jpg";
+    }
+
+    img.onload = function () {
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        lines = dataFromPython.split('\n');
+        ctx.font = '22px "Courier New", monospace';
+        ctx.fillStyle = "black";
+
+        x = 40;
+        y = img.height - 80;
+        let letterSpacing = 5;
+        for (text of lines) {
+            let currentX = x;
+            for (let i = 0; i < text.length; i++) {
+                ctx.fillText(text[i], currentX, y);
+                currentX += ctx.measureText(text[i]).width + letterSpacing;
+            }
+            y += 30;
+        }
+
+    }
+
 }
 
 

@@ -6,6 +6,17 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+.image-container {
+    width: 400px;
+    height: 400px;
+}
+
+.image-container canvas {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
 .row {
     display: flex;
     justify-content: space-between;
@@ -61,3 +72,11 @@ button {
         transform: rotate(360deg);
     }
 }
+
+/* #overlay {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+} */

@@ -1,3 +1,8 @@
+@font-face {
+    font-family: "OCR-B";
+    src: url("./fonts/ocrbfont.ttf")format("truetype");
+}
+
 .container {
     max-width: 600px;
     margin: 100px auto;
@@ -71,9 +76,4 @@ button {
     to {
         transform: rotate(360deg);
     }
-}
-
-@font-face {
-    font-family: 'OCRB';
-    src: url('./fonts/ocrb.ttf') format('truetype');
 }

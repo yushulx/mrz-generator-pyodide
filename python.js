@@ -237,75 +237,75 @@ function drawImage() {
         x = 400;
         y = 140;
 
-        ctx.font = '16px "OCRB", monospace';
+        ctx.font = '16px "Arial", monospace';
         ctx.fillText('Type', x, y);
 
         y += delta;
-        ctx.font = 'bold 18px "OCRB", monospace';
+        ctx.font = 'bold 18px "Arial", monospace';
         ctx.fillText(document_type_txt.value, x, y);
 
         y += delta + space;
-        ctx.font = '16px "OCRB", monospace';
+        ctx.font = '16px "Arial", monospace';
         ctx.fillText('Surname', x, y);
 
         y += delta;
-        ctx.font = 'bold 18px "OCRB", monospace';
+        ctx.font = 'bold 18px "Arial", monospace';
         ctx.fillText(surname_txt.value, x, y);
 
         y += delta + space;
-        ctx.font = '16px "OCRB", monospace';
+        ctx.font = '16px "Arial", monospace';
         ctx.fillText('Given names', x, y);
 
         y += delta;
-        ctx.font = 'bold 18px "OCRB", monospace';
+        ctx.font = 'bold 18px "Arial", monospace';
         ctx.fillText(surname_txt.value, x, y);
 
         y += delta + space;
-        ctx.font = '16px "OCRB", monospace';
+        ctx.font = '16px "Arial", monospace';
         ctx.fillText('Date of birth', x, y);
 
         y += delta;
-        ctx.font = 'bold 18px "OCRB", monospace';
+        ctx.font = 'bold 18px "Arial", monospace';
         ctx.fillText(`${birth_date_txt.value.slice(0, 2)}/${birth_date_txt.value.slice(2, 4)}/${birth_date_txt.value.slice(4, 6)}`, x, y);
 
         y += delta + space;
-        ctx.font = '16px "OCRB", monospace';
+        ctx.font = '16px "Arial", monospace';
         ctx.fillText('Sex', x, y);
 
         y += delta;
-        ctx.font = 'bold 18px "OCRB", monospace';
+        ctx.font = 'bold 18px "Arial", monospace';
         ctx.fillText(sex_txt.value, x, y);
 
         y += delta + space;
-        ctx.font = '16px "OCRB", monospace';
+        ctx.font = '16px "Arial", monospace';
         ctx.fillText('Date of expiry', x, y);
 
         y += delta;
-        ctx.font = 'bold 18px "OCRB", monospace';
+        ctx.font = 'bold 18px "Arial", monospace';
         ctx.fillText(`${expiry_date_txt.value.slice(0, 2)}/${expiry_date_txt.value.slice(2, 4)}/${expiry_date_txt.value.slice(4, 6)}`, x, y);
 
         y += delta + space;
-        ctx.font = '16px "OCRB", monospace';
+        ctx.font = '16px "Arial", monospace';
         ctx.fillText('Issuing country', x, y);
 
         y += delta;
-        ctx.font = 'bold 18px "OCRB", monospace';
+        ctx.font = 'bold 18px "Arial", monospace';
         ctx.fillText(country_code_txt.value, x, y);
 
         x = 500
         y = 140
-        ctx.font = '16px "OCRB", monospace';
+        ctx.font = '16px "Arial", monospace';
         ctx.fillText('Passport number', x, y);
 
         y += delta;
-        ctx.font = 'bold 18px "OCRB", monospace';
+        ctx.font = 'bold 18px "Arial", monospace';
         ctx.fillText(document_number_txt.value, x, y);
 
         // MRZ area
-        ctx.font = '22px "OCRB", monospace';
+        ctx.font = '16px "OCR-B", monospace';
         x = 60;
         y = canvas.height - 80;
-        let letterSpacing = 4;
+        let letterSpacing = 3;
         let index = 0;
         for (text of lines) {
 

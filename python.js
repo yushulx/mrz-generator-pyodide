@@ -214,12 +214,7 @@ function drawImage() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     var img = new Image();
-    if (sex_txt.value === 'M') {
-        img.src = 'images/man.png';
-    }
-    else {
-        img.src = "images/woman.png";
-    }
+    img.src = 'images/bg.jpg';
 
     img.onload = function () {
         canvas.width = img.width;
@@ -232,9 +227,23 @@ function drawImage() {
         lines = dataFromPython.split('\n');
         ctx.fillStyle = "black";
 
+        // Title
+        let x = 60;
+        let y = 80;
+        ctx.font = '40px "Arial", monospace';
+        if (dropdown.value === 'ID Card(TD1)' || dropdown.value === 'ID Card(TD2)') {
+            ctx.fillText('ID Card', x, y);
+        }
+        else if (dropdown.value === 'Passport(TD3)') {
+            ctx.fillText('Passport', x, y);
+        }
+        else {
+            ctx.fillText('Visa', x, y);
+        }
+
         // Info area
-        delta = 20;
-        space = 10;
+        let delta = 21;
+        let space = 10;
         x = 400;
         y = 140;
 
@@ -296,7 +305,15 @@ function drawImage() {
         x = 500
         y = 140
         ctx.font = '16px "Arial", monospace';
-        ctx.fillText('Passport number', x, y);
+        if (dropdown.value === 'ID Card(TD1)' || dropdown.value === 'ID Card(TD2)') {
+            ctx.fillText('Document number', x, y);
+        }
+        else if (dropdown.value === 'Passport(TD3)') {
+            ctx.fillText('Passport number', x, y);
+        }
+        else {
+            ctx.fillText('Visa number', x, y);
+        }
 
         y += delta;
         ctx.font = 'bold 18px "Arial", monospace';

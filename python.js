@@ -89,6 +89,9 @@ createRandomData();
 
 let pyodide;
 let recognizer;
+let dataFromPython = '';
+let lines = [];
+let detectedLines = [];
 
 async function main() {
     pyodide = await loadPyodide();
@@ -137,6 +140,7 @@ function randomize() {
 }
 
 function generate() {
+    detectedLines = [];
     if (!pyodide) return;
 
     pyodide.globals.set('dropdown', dropdown.value);
@@ -198,9 +202,12 @@ function generate() {
         except Exception as e:
             txt = e
     `);
-    let dataFromPython = pyodide.globals.get('txt');
+    dataFromPython = pyodide.globals.get('txt');
     document.getElementById("outputMRZ").value = dataFromPython;
+    drawImage();
+}
 
+function drawImage() {
     let canvas = document.getElementById("overlay");
     let ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -230,89 +237,100 @@ function generate() {
         x = 400;
         y = 140;
 
-        ctx.font = '16px "Courier New", monospace';
+        ctx.font = '16px "OCRB", monospace';
         ctx.fillText('Type', x, y);
 
         y += delta;
-        ctx.font = 'bold 18px "Courier New", monospace';
+        ctx.font = 'bold 18px "OCRB", monospace';
         ctx.fillText(document_type_txt.value, x, y);
 
         y += delta + space;
-        ctx.font = '16px "Courier New", monospace';
+        ctx.font = '16px "OCRB", monospace';
         ctx.fillText('Surname', x, y);
 
         y += delta;
-        ctx.font = 'bold 18px "Courier New", monospace';
+        ctx.font = 'bold 18px "OCRB", monospace';
         ctx.fillText(surname_txt.value, x, y);
 
         y += delta + space;
-        ctx.font = '16px "Courier New", monospace';
+        ctx.font = '16px "OCRB", monospace';
         ctx.fillText('Given names', x, y);
 
         y += delta;
-        ctx.font = 'bold 18px "Courier New", monospace';
+        ctx.font = 'bold 18px "OCRB", monospace';
         ctx.fillText(surname_txt.value, x, y);
 
         y += delta + space;
-        ctx.font = '16px "Courier New", monospace';
+        ctx.font = '16px "OCRB", monospace';
         ctx.fillText('Date of birth', x, y);
 
         y += delta;
-        ctx.font = 'bold 18px "Courier New", monospace';
+        ctx.font = 'bold 18px "OCRB", monospace';
         ctx.fillText(`${birth_date_txt.value.slice(0, 2)}/${birth_date_txt.value.slice(2, 4)}/${birth_date_txt.value.slice(4, 6)}`, x, y);
 
         y += delta + space;
-        ctx.font = '16px "Courier New", monospace';
+        ctx.font = '16px "OCRB", monospace';
         ctx.fillText('Sex', x, y);
 
         y += delta;
-        ctx.font = 'bold 18px "Courier New", monospace';
+        ctx.font = 'bold 18px "OCRB", monospace';
         ctx.fillText(sex_txt.value, x, y);
 
         y += delta + space;
-        ctx.font = '16px "Courier New", monospace';
+        ctx.font = '16px "OCRB", monospace';
         ctx.fillText('Date of expiry', x, y);
 
         y += delta;
-        ctx.font = 'bold 18px "Courier New", monospace';
+        ctx.font = 'bold 18px "OCRB", monospace';
         ctx.fillText(`${expiry_date_txt.value.slice(0, 2)}/${expiry_date_txt.value.slice(2, 4)}/${expiry_date_txt.value.slice(4, 6)}`, x, y);
 
         y += delta + space;
-        ctx.font = '16px "Courier New", monospace';
+        ctx.font = '16px "OCRB", monospace';
         ctx.fillText('Issuing country', x, y);
 
         y += delta;
-        ctx.font = 'bold 18px "Courier New", monospace';
+        ctx.font = 'bold 18px "OCRB", monospace';
         ctx.fillText(country_code_txt.value, x, y);
 
         x = 500
         y = 140
-        ctx.font = '16px "Courier New", monospace';
+        ctx.font = '16px "OCRB", monospace';
         ctx.fillText('Passport number', x, y);
 
         y += delta;
-        ctx.font = 'bold 18px "Courier New", monospace';
+        ctx.font = 'bold 18px "OCRB", monospace';
         ctx.fillText(document_number_txt.value, x, y);
 
         // MRZ area
-        ctx.font = '22px "Courier New", monospace';
+        ctx.font = '22px "OCRB", monospace';
         x = 60;
         y = canvas.height - 80;
         let letterSpacing = 4;
+        let index = 0;
         for (text of lines) {
 
             let currentX = x;
+            let checkLine = '';
+
+            if (detectedLines.length > 0) {
+                checkLine = detectedLines[index];
+            }
+
             for (let i = 0; i < text.length; i++) {
                 ctx.fillText(text[i], currentX, y);
+
+                if (checkLine !== '' && checkLine[i] !== text[i]) {
+                    ctx.fillRect(currentX, y + 5, ctx.measureText(text[i]).width, 2);
+                }
+
                 currentX += ctx.measureText(text[i]).width + letterSpacing;
             }
             y += 30;
+            index += 1;
         }
 
     }
-
 }
-
 
 function recognize() {
 
@@ -328,6 +346,7 @@ function recognize() {
                 }
                 let output = '';
                 for (let line of result.lineResults) {
+                    detectedLines.push(line.text);
                     output += line.text + '\n';
                 }
                 div.innerText = output;
@@ -335,6 +354,9 @@ function recognize() {
             }
             if (!hasResult) {
                 div.innerText = 'Not found';
+            }
+            else {
+                drawImage();
             }
         });
     }

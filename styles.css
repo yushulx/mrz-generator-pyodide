@@ -72,3 +72,8 @@ button {
         transform: rotate(360deg);
     }
 }
+
+@font-face {
+    font-family: 'OCRB';
+    src: url('./fonts/ocrb.ttf') format('truetype');
+}

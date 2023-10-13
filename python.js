@@ -263,6 +263,14 @@ function generate() {
 
         y += delta + space;
         ctx.font = '16px "Courier New", monospace';
+        ctx.fillText('Sex', x, y);
+
+        y += delta;
+        ctx.font = 'bold 18px "Courier New", monospace';
+        ctx.fillText(sex_txt.value, x, y);
+
+        y += delta + space;
+        ctx.font = '16px "Courier New", monospace';
         ctx.fillText('Date of expiry', x, y);
 
         y += delta;
@@ -276,6 +284,15 @@ function generate() {
         y += delta;
         ctx.font = 'bold 18px "Courier New", monospace';
         ctx.fillText(country_code_txt.value, x, y);
+
+        x = 500
+        y = 140
+        ctx.font = '16px "Courier New", monospace';
+        ctx.fillText('Passport number', x, y);
+
+        y += delta;
+        ctx.font = 'bold 18px "Courier New", monospace';
+        ctx.fillText(document_number_txt.value, x, y);
 
         // MRZ area
         ctx.font = '22px "Courier New", monospace';

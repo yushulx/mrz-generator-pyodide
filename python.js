@@ -141,6 +141,7 @@ function randomize() {
 
 function generate() {
     detectedLines = [];
+    document.getElementById('mrz-result').innerText = '';
     if (!pyodide) return;
 
     pyodide.globals.set('dropdown', dropdown.value);

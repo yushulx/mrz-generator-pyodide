@@ -88,13 +88,22 @@ createRandomData();
 
 
 let pyodide;
+let recognizer;
 
 async function main() {
     pyodide = await loadPyodide();
     await pyodide.loadPackage("micropip");
     const micropip = pyodide.pyimport("micropip");
     await micropip.install('mrz');
-    document.getElementById("loading-indicator").style.display = "none";
+
+
+    Dynamsoft.DLR.LabelRecognizer.initLicense("DLS2eyJoYW5kc2hha2VDb2RlIjoiMjAwMDAxLTE2NDk4Mjk3OTI2MzUiLCJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSIsInNlc3Npb25QYXNzd29yZCI6IndTcGR6Vm05WDJrcEQ5YUoifQ==");
+    recognizer = await Dynamsoft.DLR.LabelRecognizer.createInstance({
+        runtimeSettings: "MRZ"
+    });
+    Dynamsoft.DLR.LabelRecognizer.onResourcesLoaded = (resourcesPath) => {
+        document.getElementById("loading-indicator").style.display = "none";
+    };
 }
 main();
 
@@ -198,25 +207,83 @@ function generate() {
 
     var img = new Image();
     if (sex_txt.value === 'M') {
-        img.src = 'images/man.jpg';
+        img.src = 'images/man.png';
     }
     else {
-        img.src = "images/woman.jpg";
+        img.src = "images/woman.png";
     }
 
     img.onload = function () {
         canvas.width = img.width;
         canvas.height = img.height;
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#FFFFFF';  // e.g., a shade of orange
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.drawImage(img, 0, 0, img.width, img.height);
 
         lines = dataFromPython.split('\n');
-        ctx.font = '22px "Courier New", monospace';
         ctx.fillStyle = "black";
 
-        x = 40;
-        y = img.height - 80;
-        let letterSpacing = 5;
+        // Info area
+        delta = 20;
+        space = 10;
+        x = 400;
+        y = 140;
+
+        ctx.font = '16px "Courier New", monospace';
+        ctx.fillText('Type', x, y);
+
+        y += delta;
+        ctx.font = 'bold 18px "Courier New", monospace';
+        ctx.fillText(document_type_txt.value, x, y);
+
+        y += delta + space;
+        ctx.font = '16px "Courier New", monospace';
+        ctx.fillText('Surname', x, y);
+
+        y += delta;
+        ctx.font = 'bold 18px "Courier New", monospace';
+        ctx.fillText(surname_txt.value, x, y);
+
+        y += delta + space;
+        ctx.font = '16px "Courier New", monospace';
+        ctx.fillText('Given names', x, y);
+
+        y += delta;
+        ctx.font = 'bold 18px "Courier New", monospace';
+        ctx.fillText(surname_txt.value, x, y);
+
+        y += delta + space;
+        ctx.font = '16px "Courier New", monospace';
+        ctx.fillText('Date of birth', x, y);
+
+        y += delta;
+        ctx.font = 'bold 18px "Courier New", monospace';
+        ctx.fillText(`${birth_date_txt.value.slice(0, 2)}/${birth_date_txt.value.slice(2, 4)}/${birth_date_txt.value.slice(4, 6)}`, x, y);
+
+        y += delta + space;
+        ctx.font = '16px "Courier New", monospace';
+        ctx.fillText('Date of expiry', x, y);
+
+        y += delta;
+        ctx.font = 'bold 18px "Courier New", monospace';
+        ctx.fillText(`${expiry_date_txt.value.slice(0, 2)}/${expiry_date_txt.value.slice(2, 4)}/${expiry_date_txt.value.slice(4, 6)}`, x, y);
+
+        y += delta + space;
+        ctx.font = '16px "Courier New", monospace';
+        ctx.fillText('Issuing country', x, y);
+
+        y += delta;
+        ctx.font = 'bold 18px "Courier New", monospace';
+        ctx.fillText(country_code_txt.value, x, y);
+
+        // MRZ area
+        ctx.font = '22px "Courier New", monospace';
+        x = 60;
+        y = canvas.height - 80;
+        let letterSpacing = 4;
         for (text of lines) {
+
             let currentX = x;
             for (let i = 0; i < text.length; i++) {
                 ctx.fillText(text[i], currentX, y);
@@ -230,4 +297,28 @@ function generate() {
 }
 
 
+function recognize() {
 
+    if (recognizer) {
+        let div = document.getElementById('mrz-result');
+        div.textContent = 'Recognizing...';
+
+        recognizer.recognize(document.getElementById("overlay")).then(function (results) {
+            let hasResult = false;
+            for (let result of results) {
+                if (result.lineResults.length !== 2 && result.lineResults.length !== 3) {
+                    continue;
+                }
+                let output = '';
+                for (let line of result.lineResults) {
+                    output += line.text + '\n';
+                }
+                div.innerText = output;
+                hasResult = true;
+            }
+            if (!hasResult) {
+                div.innerText = 'Not found';
+            }
+        });
+    }
+}

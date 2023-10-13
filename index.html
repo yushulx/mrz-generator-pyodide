@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dynamsoft-label-recognizer@2.2.31/dist/dlr.js"></script>
     <title>MRZ Generator</title>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -88,6 +89,10 @@
             <div>
                 <button id="generateBtn" onclick="generate()">Generate</button>
             </div>
+            <div>
+                <button onclick="recognize()">Recognize MRZ</button>
+            </div>
+
         </div>
 
         <div class="row">
@@ -101,6 +106,9 @@
                 <canvas id="overlay"></canvas>
             </div>
         </div>
+
+
+        <div id="mrz-result" class="right-sticky-content"></div>
 
     </div>
 

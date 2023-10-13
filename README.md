@@ -13,7 +13,8 @@ The project demonstrates how to build an online MRZ generator app with [Python M
     ```bash
     python -m http.server
     ```
-    ![online mrz generator](https://github.com/yushulx/mrz-generator-pyodide/assets/2202306/d95f6ac4-f352-4ed0-a8eb-ef2597579088)
+    ![online mrz generator](https://github.com/yushulx/mrz-generator-pyodide/assets/2202306/61c74bfe-9d0c-43b3-9072-ff32e38f0ae3)
+
 
 
 

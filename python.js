@@ -268,7 +268,7 @@ function drawImage() {
 
         y += delta;
         ctx.font = 'bold 18px "Arial", monospace';
-        ctx.fillText(surname_txt.value, x, y);
+        ctx.fillText(given_names_txt.value, x, y);
 
         y += delta + space;
         ctx.font = '16px "Arial", monospace';

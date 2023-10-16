@@ -110,11 +110,11 @@ function initDLR() {
             runtimeSettings: "MRZ"
         });
 
-        hidePopup();
+        // hidePopup();
         Dynamsoft.DLR.LabelRecognizer.onResourcesLoaded = (resourcesPath) => {
             dlrReady = true;
             document.getElementById("loading-indicator").style.display = "none";
-            hidePopup();
+            // hidePopup();
         };
     })();
 }

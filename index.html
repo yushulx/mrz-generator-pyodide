@@ -91,9 +91,6 @@
             <div>
                 <button id="generateBtn" onclick="generate()">Generate</button>
             </div>
-            <div>
-                <button onclick="recognize()">Recognize MRZ</button>
-            </div>
 
         </div>
 
@@ -110,6 +107,12 @@
         </div>
 
 
+        <div class="row">
+            <div>
+                <button id='recognizeBtn' onclick="recognize()" style="visibility: hidden;">Recognize MRZ</button>
+            </div>
+
+        </div>
         <div id="mrz-result" class="right-sticky-content"></div>
 
     </div>

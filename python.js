@@ -92,21 +92,40 @@ let recognizer;
 let dataFromPython = '';
 let lines = [];
 let detectedLines = [];
+let dlrReady = false;
+
+function hidePopup() {
+    if (document.getElementsByClassName('dls-license-mask')[0]) {
+        document.getElementsByClassName('dls-license-mask')[0].style.display = 'none';
+    }
+    if (document.getElementsByClassName('dls-license-dialog')[0]) {
+        document.getElementsByClassName('dls-license-dialog')[0].style.display = 'none';
+    }
+}
+
+function initDLR() {
+    (async () => {
+        Dynamsoft.DLR.LabelRecognizer.initLicense("DLS2eyJoYW5kc2hha2VDb2RlIjoiMjAwMDAxLTE2NDk4Mjk3OTI2MzUiLCJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSIsInNlc3Npb25QYXNzd29yZCI6IndTcGR6Vm05WDJrcEQ5YUoifQ==");
+        recognizer = await Dynamsoft.DLR.LabelRecognizer.createInstance({
+            runtimeSettings: "MRZ"
+        });
+
+        hidePopup();
+        Dynamsoft.DLR.LabelRecognizer.onResourcesLoaded = (resourcesPath) => {
+            dlrReady = true;
+            document.getElementById("loading-indicator").style.display = "none";
+            hidePopup();
+        };
+    })();
+}
 
 async function main() {
     pyodide = await loadPyodide();
     await pyodide.loadPackage("micropip");
     const micropip = pyodide.pyimport("micropip");
     await micropip.install('mrz');
-
-
-    Dynamsoft.DLR.LabelRecognizer.initLicense("DLS2eyJoYW5kc2hha2VDb2RlIjoiMjAwMDAxLTE2NDk4Mjk3OTI2MzUiLCJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSIsInNlc3Npb25QYXNzd29yZCI6IndTcGR6Vm05WDJrcEQ5YUoifQ==");
-    recognizer = await Dynamsoft.DLR.LabelRecognizer.createInstance({
-        runtimeSettings: "MRZ"
-    });
-    Dynamsoft.DLR.LabelRecognizer.onResourcesLoaded = (resourcesPath) => {
-        document.getElementById("loading-indicator").style.display = "none";
-    };
+    document.getElementById("loading-indicator").style.display = "none";
+    initDLR();
 }
 main();
 
@@ -206,6 +225,8 @@ function generate() {
     dataFromPython = pyodide.globals.get('txt');
     document.getElementById("outputMRZ").value = dataFromPython;
     drawImage();
+
+    document.getElementById("recognizeBtn").style.visibility = "visible";
 }
 
 function drawImage() {
@@ -351,6 +372,10 @@ function drawImage() {
 }
 
 function recognize() {
+    if (!dlrReady) {
+        document.getElementById("loading-indicator").style.display = "block";
+        return;
+    }
 
     if (recognizer) {
         let div = document.getElementById('mrz-result');
